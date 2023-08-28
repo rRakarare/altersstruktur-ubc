@@ -13,7 +13,6 @@ export default function Home() {
       <NoSSR>
         <ChartScreen />
       </NoSSR>
-      <Tst/>
     </div>
   );
 }
