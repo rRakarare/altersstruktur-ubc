@@ -2,107 +2,123 @@
 
 import { cn } from "@/lib/utils";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
+import { getBar, getDynBar, getMaskD, getShapeD } from "@/lib/pathCreate";
+import { useUbcStore } from "@/lib/store";
 
 const colorMap = {
-  "MTA": "#0088FE",
-  "SERV": "#42c72aE",
-}
+  MTA: "#0088FE",
+  SERV: "#42c72aE",
+};
 
 const data = [
   {
     name: "60",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
   {
     name: "61",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
   {
     name: "62",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
   {
     name: "63",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
   {
     name: "64",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
   {
     name: "65",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+     
+    ],
     pk: 1,
   },
   {
     name: "66",
-    vals: [{pivot:"MTA", vk: 0.4}, {pivot:"SERV", vk:0.7}],
+    vals: [
+      { pivot: "MTA", vk: 0.4 },
+      { pivot: "SERV", vk: 0.7 },
+    ],
     pk: 1,
   },
 ];
 
-function scaleSvgPath(originalD, scalingFactor) {
-  var pattern = /[-+]?\d*\.\d+|[-+]?\d+/g;
-
-  function scaleValue(value) {
-    return (parseFloat(value) * scalingFactor).toString();
-  }
-
-  var scaledD = originalD.replace(pattern, function (match) {
-    return scaleValue(match);
-  });
-
-  return scaledD;
-}
-
-const getPath = (x, y, width, height, scale, shift) => {
-  const d_raw =
-    "h-10v20c0.637,-3.65,2.303,-7.959,4,-9c1.697,-1.041,4,-1.5,4,-1.5v-0.5c0,0,-2,-1,-2,-4c0,-3,1.499,-5,4,-5zm10,20v-20h-10c2.501,0,4,2,4,5c0,3,-2,4,-2,4v0.5c0,0,2.303,0.459,4,1.5c1.697,1.041,3.363,5.35,4,9zm0,11c0,0,0,1,-1.5,1c-1.5,0,-1.5,-1,-1.5,-1v-9c-0.578,-1.284,-2,-3,-2,-3v30c0,0,0,1,-1.5,1c-1.5,0,-1.5,-1,-1.5,-1l-2,-18l-2,18c0,0,0,1,-1.5,1c-1.5,0,-1.5,-1,-1.5,-1v-30c0,0,-1.422,1.716,-2,3v9c0,0,0,1,-1.5,1c-1.5,0,-1.5,-1,-1.5,-1v19h6.5h7h6.5v-19z";
-
-  const d = `M${x + width / 2},${y - height * shift}${scaleSvgPath(
-    d_raw,
-    scale
-  )}`;
-
-  return d;
-};
+const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
 
 const TriangleBar = (props) => {
-  console.log(props);
 
   const { fill, x, y, width, height, vals } = props;
 
-  const initHeight = 50;
+  const {uniqs} = useUbcStore()
+
+  const initHeight = 92;
   const dataHeight = height;
   const scale = dataHeight / initHeight;
   // const scale = 1
 
+
+
   return (
     <g>
-      {vals.map((item, index) => (
-        <path
-        d={getPath(x, y, width, height, scale, index)}
-        stroke="none"
-        fill={colorMap[item.pivot]}
-      />
+      {vals && vals.map((item, index) => (
+        <g key={index}>
+          <path
+            d={getBar(x, y, width, height, scale, index)}
+            stroke="none"
+            fill={setOpacity(uniqs.find(uniq => uniq.name === item.pivot).color, 0.4)}
+          />
+          <path
+            d={getDynBar(x, y, width, height, scale, index, item.vk)}
+            stroke="none"
+            fill={uniqs.find(uniq => uniq.name === item.pivot).color}
+          />
+          <path
+            d={getMaskD(x, y, width, height, scale, index)}
+            stroke="none"
+            fill={"white"}
+          />
+        </g>
       ))}
-      
     </g>
   );
 };
 
 export function ChartScreen() {
+
+  const { chartData } = useUbcStore();
+
   return (
     <div className="container flex justify-center mt-10">
       <BarChart
-        width={700}
+        width={800}
         height={300}
-        data={data}
+        data={chartData}
         margin={{
           top: 20,
           right: 30,
@@ -111,9 +127,11 @@ export function ChartScreen() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        
+        <Bar dataKey="pk" fill="#72718a" shape={<TriangleBar />} />       
+
         <YAxis type="number" domain={[0, 3]} tickCount={4} />
-        <Bar dataKey="pk" fill="#72718a" shape={<TriangleBar />} />
+        <XAxis dataKey="name"  />
       </BarChart>
     </div>
   );

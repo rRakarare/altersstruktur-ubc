@@ -1,8 +1,5 @@
 import DataDrop from "./items/DataDrop";
 import DataScreen from "./items/DataScreen";
-import Tst from "./items/Tst";
-import { ChartScreen } from "./items/ChartScreen";
-import NoSSR from "@/components/NoSSR";
 
 export default function Home() {
   return (
@@ -10,9 +7,7 @@ export default function Home() {
       <DataDrop />
       <DataScreen />
 
-      <NoSSR>
-        <ChartScreen />
-      </NoSSR>
     </div>
+    
   );
 }

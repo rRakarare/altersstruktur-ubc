@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { randColor } from './utils'
 
 interface DataPoint {
   alter: number,
@@ -17,8 +18,11 @@ interface State {
   isDone: boolean,
   rawData: any[]
   data: DataPoint[]
-  uniqs: string[],
+  chartData: any[]
+  uniqs: any[],
   setRawData: (data:any[]) => void
+  changeColor: (pivot:string, color:string) => void
+  setChartData: (min:number, max:number, auto:boolean) => void
   setData: () => void
   reset: () => void
   setColumnMap: (key:string, value:string) => void
@@ -32,13 +36,54 @@ const initState = {
   },
   isDone:false,
   rawData:[],
+  chartData:[],
   data:[],
   uniqs:[],
 }
 
 export const useUbcStore = create<State>()((set,get) => ({
   ...initState,
+  setChartData: (min, max, auto) => {
+    const data = get().data
+    const dataX = data.map(item => Number(item.alter))
+
+    console.log("data", data)
+
+    if (auto && dataX.length > 0) {
+      
+      const min = Math.min(...dataX)
+      const max = Math.max(...dataX)
+
+      const chartData = Array(max-min+1).fill(1).map((n, i) => min + i).map(alter => {
+
+        
+        return {
+          pk:1,
+          name:alter,
+          vals: data.filter(datap => Number(datap.alter) === Number(alter) )
+        }
+      })
+      set(()=>({chartData: [...chartData]}))
+      return
+    }
+    const chartData = Array(max-min+1).fill(1).map((n, i) => min + i).map(alter => {
+      return {
+        pk:1,
+        name:alter,
+        vals: data.filter(datap => Number(datap.alter) === Number(alter) )
+      }
+    })
+
+    set(()=>({chartData: [...chartData]}))
+  },
   setRawData: (data) => set(()=>({rawData: [...data]})),
+  changeColor: (pivot, color) => {
+    const uniqs = get().uniqs.map(item => (item.name === pivot ? {...item, color} : item))
+
+    console.log("uuunii", uniqs)
+
+    set(()=>({uniqs: [...uniqs]}))
+  },
   setData: () => {
     const columnMap = get().columnMap
     const rawData = get().rawData
@@ -49,11 +94,14 @@ export const useUbcStore = create<State>()((set,get) => ({
       pivot: item[columnMap["pivot"]],
     }))
 
-    const uniqs = [...new Set(data.map(item => item.pivot))]
+    const uniqsraw = [...new Set(data.map(item => item.pivot))]
+    const uniqs = uniqsraw.map(item => ({name: item, color: randColor()}))
 
 
 
     set(()=> ({data: [...data], uniqs:uniqs, isDone: true}))
+
+
 
 
   },
