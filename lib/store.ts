@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { randColor } from './utils'
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 
 interface DataPoint {
   alter: number,
@@ -20,6 +21,8 @@ interface State {
   data: DataPoint[]
   chartData: any[]
   uniqs: any[],
+  rowSize: number,
+  colSize: number,
   setRawData: (data:any[]) => void
   changeColor: (pivot:string, color:string) => void
   setChartData: (min:number, max:number, auto:boolean) => void
@@ -35,6 +38,8 @@ const initState = {
     pivot: null
   },
   isDone:false,
+  rowSize: 80,
+  colSize: 30,
   rawData:[],
   chartData:[],
   data:[],
@@ -47,7 +52,6 @@ export const useUbcStore = create<State>()((set,get) => ({
     const data = get().data
     const dataX = data.map(item => Number(item.alter))
 
-    console.log("data", data)
 
     if (auto && dataX.length > 0) {
       
@@ -66,7 +70,8 @@ export const useUbcStore = create<State>()((set,get) => ({
       set(()=>({chartData: [...chartData]}))
       return
     }
-    const chartData = Array(max-min+1).fill(1).map((n, i) => min + i).map(alter => {
+
+    const chartData = Array(max-min+1).fill(1).map((n, i) => Number(min) + Number(i)).map(alter => {
       return {
         pk:1,
         name:alter,
@@ -80,7 +85,6 @@ export const useUbcStore = create<State>()((set,get) => ({
   changeColor: (pivot, color) => {
     const uniqs = get().uniqs.map(item => (item.name === pivot ? {...item, color} : item))
 
-    console.log("uuunii", uniqs)
 
     set(()=>({uniqs: [...uniqs]}))
   },
@@ -118,3 +122,8 @@ export const useUbcStore = create<State>()((set,get) => ({
     set(()=> ({...initState}))
   },
 }))
+
+
+if (process.env.NODE_ENV === 'development') {
+  mountStoreDevtool('Store', useUbcStore);
+}

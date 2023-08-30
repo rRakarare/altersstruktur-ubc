@@ -16,10 +16,6 @@ function Selector({items, placeholder, className="", ident}) {
 
 
     const {columnMap, setColumnMap} = useUbcStore()
-
-    useEffect(() => {
-      console.log(columnMap)
-    }, [columnMap])
     
 
   return (

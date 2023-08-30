@@ -32,14 +32,11 @@ const sumArray = (array) => {
 function PivotTable() {
   const { data, uniqs } = useUbcStore();
 
-  console.log("data", data);
-  console.log("uniqs", uniqs);
-
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Pivot</TableHead>
+          <TableHead>Pivot</TableHead>
           <TableHead>Anzahl</TableHead>
           <TableHead>VK</TableHead>
           <TableHead>Ø Alter</TableHead>

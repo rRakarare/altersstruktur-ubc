@@ -13,19 +13,18 @@ function DataScreen() {
     setChartData(20, 50, true);
   }, [data]);
 
-  useEffect(() => {
-    console.log(chartData);
-  }, [chartData]);
 
   if (!isDone) {
     return null;
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-14">
+      <div className="w-full"> 
       <NoSSR>
         <ChartScreen />
       </NoSSR>
+      </div>
       <SettingComp />
     </div>
   );
