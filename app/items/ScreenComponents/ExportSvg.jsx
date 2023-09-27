@@ -14,7 +14,7 @@ function ExportSvg() {
   }
 
   return (
-    <Button onClick={()=>dlGraph()}>Export</Button>
+    <Button variant={"outline"} onClick={()=>dlGraph()}>Export</Button>
   )
 }
 

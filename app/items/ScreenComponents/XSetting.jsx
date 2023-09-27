@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useUbcStore } from "@/lib/store";
 
-function ChartSettings() {
+function XSetting() {
 
     const {setChartData} = useUbcStore()
 
@@ -40,4 +40,4 @@ function ChartSettings() {
   );
 }
 
-export default ChartSettings;
+export default XSetting;
