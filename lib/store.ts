@@ -24,12 +24,14 @@ interface State {
   ySpan: number[] | null;
   dataHeight: number ;
   graphHeight: number ;
+  dataLabel:any;
   rowSize: number;
   colSize: number;
   setRawData: (data: any[]) => void;
   setGraphHeight: (graphHeight: number) => void;
   setDataHeight: (dataHeight: number) => void;
   setYSpan: (span: any) => void;
+  setDataLabel: (label: any) => void;
   changeColor: (pivot: string, color: string) => void;
   setChartData: (min: number, max: number, auto: boolean) => void;
   setData: () => void;
@@ -46,9 +48,15 @@ const initState = {
   isDone: false,
   rowSize: 80,
   colSize: 30,
-  ySpan: null,
+  ySpan: [0,1],
   graphHeight: 400,
-  dataHeight: 100,
+  dataLabel: {
+    visible: true,
+    size: 15,
+    weight: 5,
+    radius: 14
+  },
+  dataHeight: 60,
   rawData: [],
   chartData: [],
   data: [],
@@ -93,6 +101,7 @@ export const useUbcStore = create<State>()((set, get) => ({
     set(() => ({ chartData: [...chartData] }));
   },
   setRawData: (data) => set(() => ({ rawData: [...data] })),
+  setDataLabel: (label) => set(() => ({ dataLabel: label })),
   setDataHeight: (dataHeight) => {
     set(() => ({ dataHeight: dataHeight }))
   },

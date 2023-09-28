@@ -33,8 +33,14 @@ function XSetting() {
         <Label className="w-full">Custom X-Axis</Label>
       </div>
       <div className="flex space-x-2">
+        <div>
+        <Label className="text-xs">Xmin</Label>
         <Input disabled={!switchX} value={xmin} onChange={(e) => setXmin(Number(e.target.value))} type="number" className="max-w-[60px]" />
+        </div>
+        <div>
+        <Label className="text-xs">Xmax</Label>
         <Input disabled={!switchX} value={xmax} onChange={(e) => setXmax(Number(e.target.value))} type="number" className="max-w-[60px]" />
+        </div>
       </div>
     </div>
   );

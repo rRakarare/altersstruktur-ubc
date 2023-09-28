@@ -56,7 +56,7 @@ function PivotTable() {
             <TableRow key={uniq.name}>
               <TableCell className="font-medium">{uniq.name}</TableCell>
               <TableCell>{count}</TableCell>
-              <TableCell>{vk}</TableCell>
+              <TableCell>{vk.toFixed(1)}</TableCell>
               <TableCell>{(ageSum / count).toFixed(1)}</TableCell>
               <TableCell className="text-right">
                 <Popover>

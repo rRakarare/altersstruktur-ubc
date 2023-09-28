@@ -1,12 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, LabelList } from "recharts";
 import { getBar, getDynBar, getMaskD, getShapeD } from "@/lib/pathCreate";
 import { useUbcStore } from "@/lib/store";
 
 
-const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
 
 const PersonBar = (props) => {
 
@@ -29,7 +27,8 @@ const PersonBar = (props) => {
           <path
             d={getBar(x, y, width, height, scale, index)} 
             stroke="none"
-            fill={setOpacity(uniqs.find(uniq => uniq.name === item.pivot).color, 0.4)}
+            opacity={0.25}
+            fill={uniqs.find(uniq => uniq.name === item.pivot).color}
           />
           <path
             d={getDynBar(x, y, width, height, scale, index, item.vk)}
@@ -50,6 +49,8 @@ const PersonBar = (props) => {
 const renderCustomizedLabel = (props) => {
   const { x, y, width, height, value } = props;
 
+  const {dataLabel} = useUbcStore()
+
   
 
   const position = value.length
@@ -60,7 +61,7 @@ const renderCustomizedLabel = (props) => {
   },0);
 
 
-  if (position === 0) {
+  if (position === 0 || !dataLabel.visible) {
     return
   }
 
@@ -71,7 +72,7 @@ const renderCustomizedLabel = (props) => {
   return (
     <g>
       <circle cx={x + width / 2} cy={(y+height-height*position - radius-3)} r={radius} fill="#FFFFFF" stroke="#515151" />
-      <text x={x + width / 2} y={(y+height-height*position - radius/9*8-3)} fill="#282828" fontWeight={500} textAnchor="middle" dominantBaseline="middle">
+      <text x={x + width / 2} y={(y+height-height*position - radius/3*2-3)} fill="#282828" fontWeight={dataLabel.weight*100} fontSize={dataLabel.size} textAnchor="middle">
         {(Math.round(vk * 10) / 10).toString().replace(".",",")}
       </text>
     </g>

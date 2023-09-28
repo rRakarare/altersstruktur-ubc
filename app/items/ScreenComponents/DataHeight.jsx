@@ -7,19 +7,17 @@ import { useEffect, useState } from "react";
 import { useUbcStore } from "@/lib/store";
 
 function XSetting() {
-  const { setGraphHeight, graphHeight, dataHeight, setDataHeight, ySpan } = useUbcStore();
+  const { setGraphHeight, graphHeight, dataHeight, setDataHeight, ySpan } =
+    useUbcStore();
 
-  const [switchH, setSwitchH] = useState(false);
+  const [switchH, setSwitchH] = useState(true);
 
   useEffect(() => {
-
     if (switchH) {
-      const fullHeight = ySpan[1] * dataHeight
+      const fullHeight = ySpan[1] * dataHeight;
 
-      setGraphHeight(fullHeight + 75)
-
+      setGraphHeight(fullHeight + 75);
     }
-
   }, [switchH, dataHeight, ySpan]);
 
   return (
@@ -34,20 +32,27 @@ function XSetting() {
       </div>
       <div className="flex space-x-2">
         {switchH ? (
-          <Input
-            value={dataHeight}
-            onChange={(e) => setDataHeight(Number(e.target.value))}
-            type="number"
-            className="max-w-[130px]"
-          />
+          <div>
+            <Label className="text-xs">data height</Label>
+            <Input
+              value={dataHeight}
+              onChange={(e) => setDataHeight(Number(e.target.value))}
+              type="number"
+              className="max-w-[130px]"
+            />
+          </div>
         ) : (
-          <Input
-            value={graphHeight}
-            min={100}
-            onChange={(e) => setGraphHeight(Number(e.target.value))}
-            type="number"
-            className="max-w-[130px]"
-          />
+          <div>
+            <Label className="text-xs">graph height</Label>
+
+            <Input
+              value={graphHeight}
+              min={100}
+              onChange={(e) => setGraphHeight(Number(e.target.value))}
+              type="number"
+              className="max-w-[130px]"
+            />
+          </div>
         )}
       </div>
     </div>

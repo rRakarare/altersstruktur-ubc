@@ -36,8 +36,14 @@ function YSetting() {
         <Label className="w-full">Custom Y-Axis</Label>
       </div>
       <div className="flex space-x-2">
+      <div>
+      <Label className="text-xs">Ymin</Label>
         <Input disabled={!switchY} value={ymin} onChange={(e) => setYmin(Number(e.target.value))} type="number" className="max-w-[60px]" />
+      </div>
+        <div>
+        <Label className="text-xs">Ymax</Label>
         <Input disabled={!switchY} value={Ymax} onChange={(e) => setYmax(Number(e.target.value))} type="number" className="max-w-[60px]" />
+        </div>
       </div>
     </div>
   );

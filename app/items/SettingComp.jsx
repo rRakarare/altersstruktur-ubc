@@ -19,7 +19,7 @@ function SettingComp() {
       <YSetting/>
       
       <DataHeight/>
-      {/* <ToolTip/> */}
+      <ToolTip/>
       <ExportSvg />
       </div>
       
