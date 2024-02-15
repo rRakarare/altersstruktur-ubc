@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, LabelList } from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, LabelList, Label } from "recharts";
 import { getBar, getDynBar, getMaskD, getShapeD } from "@/lib/pathCreate";
 import { useUbcStore } from "@/lib/store";
 
@@ -96,7 +96,7 @@ export function ChartScreen() {
           top: 40,
           right: 30,
           left: 20,
-          bottom: 5,
+          bottom: 13,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -105,8 +105,10 @@ export function ChartScreen() {
         <LabelList dataKey="vals" content={renderCustomizedLabel} />
           </Bar>     
 
-        <YAxis type="number" domain={ySpan} tickCount={ySpan[1]+1} />
-        <XAxis dataKey="name" tickCount={chartData.length}  />
+        <YAxis type="number" domain={ySpan} tickCount={ySpan[1]+1} label={{ value: 'Mitarbeiter', angle: -90, position: 'center', }}/>
+        <XAxis dataKey="name" tickCount={chartData.length}>
+        <Label value="Alter" offset={-10} position="insideBottom" />
+        </XAxis>
       </BarChart>
     </div>
   );
