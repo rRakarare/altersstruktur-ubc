@@ -130,20 +130,21 @@ export const useUbcStore = create<State>()((set, get) => ({
     const rawData = get().rawData;
 
     const data = rawData.map((item) => ({
-      alter: item[columnMap["alter"]],
-      vk: item[columnMap["vk"]],
-      pivot: item[columnMap["pivot"]],
+      alter: item[columnMap["alter"] as string],
+      vk: item[columnMap["vk"] as string],
+      pivot: item[columnMap["pivot"] as string],
     }));
 
+    //@ts-ignore
     const uniqsraw = [...new Set(data.map((item) => item.pivot))];
     const uniqs = uniqsraw.map((item) => ({ name: item, color: randColor() }));
 
     set(() => ({ data: [...data], uniqs: uniqs, isDone: true }));
   },
-  setColumnMap: (key, value) => {
+  setColumnMap: (key: string, value: string) => {
     set((state) => {
       let newState = state.columnMap;
-      newState[key] = value;
+      newState[key as keyof ColumnMap] = value;
 
       return { columnMap: { ...newState } };
     });
