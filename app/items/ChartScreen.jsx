@@ -46,7 +46,7 @@ const PersonBar = (props) => {
   );
 };
 
-const renderCustomizedLabel = (props) => {
+const RenderCustomizedLabel = (props) => {
   const { x, y, width, height, value } = props;
 
   const {dataLabel} = useUbcStore()
@@ -102,7 +102,7 @@ export function ChartScreen() {
         <CartesianGrid strokeDasharray="3 3" />
         
         <Bar width={400} dataKey="pk" fill="#72718a" shape={<PersonBar />}>
-        <LabelList dataKey="vals" content={renderCustomizedLabel} />
+        <LabelList dataKey="vals" content={RenderCustomizedLabel} />
           </Bar>     
 
         <YAxis type="number" domain={ySpan} tickCount={ySpan[1]+1} label={{ value: 'Mitarbeiter', angle: -90, position: 'center', }}/>
